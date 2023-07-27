@@ -1,0 +1,65 @@
+<div class="container-show">
+  <div class="grid-show">
+
+    <div class="grid-item-show">
+      <div class="card-show">
+        <div class="card-content-show">
+          <h1 class="card-head-show"> <%= @plant.name %> </h1>
+          <p class="card-text-show"> <%= @plant.description %> </p>
+
+          <%= cl_image_tag @plant.photo.key, class: "card-img-show" if @plant.photo.attached? %>
+          <div class="badge-show">
+            <span class="badge badge-pill badge-1">Awesome</span>
+            <span class="badge badge-pill badge-2">Cool Plant</span>
+            <span class="badge badge-pill badge-3">Nice Defender</span>
+          </div>
+          <hr class="hr-1">
+          <div class="price-show-grid">
+            <input class="form-control numeric integer optional" type="number" step="1" name="plant[quantity]" id="plant-quantity-show">
+           <span id="price-plant"><%= @plant.price %></span>
+          </div>
+          <hr class="hr-2">
+          <a href="#" class="card-btn-show">Where To Buy  <i class="fas fa-shopping-cart"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-item-show">
+      <div id="map"
+        style="width: 100%; height: 100%;"
+        data-markers="<%= @markers.to_json %>"
+        data-mapbox-api-key="<%= ENV['MAPBOX_API_KEY'] %>">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-show">
+  <div class="review-show">
+    <h3>Reviews</h3>
+      <% if @plant.reviews.empty? %>
+        <p>Be the first to let a review</p>
+      <% else %>
+        <ul class="list-group">
+          <% @plant.reviews.each do |review| %>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span class="badge badge-primary badge-pill">
+                <% counter = 0 %>
+                <% 5.times do %>
+                  <i class="fa <%= review.rating > counter ? 'fa-star' : 'fa-star-o' %>"></i>
+                  <% counter += 1 %>
+                <% end %>
+              </span>
+              <%= review.content %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+
+     <%= render "reviews/new", plant: @plant, review: @review %>
+
+    </div>
+</div>
+
+<%= render 'shared/footer' %>
+
